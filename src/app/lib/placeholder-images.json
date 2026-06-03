@@ -1,0 +1,35 @@
+
+{
+  "placeholderImages": [
+    {
+      "id": "butterfly-egg",
+      "description": "A close-up of a butterfly egg on a leaf",
+      "imageUrl": "https://picsum.photos/seed/butterfly-egg/800/600",
+      "imageHint": "butterfly egg leaf"
+    },
+    {
+      "id": "butterfly-larva",
+      "description": "A monarch butterfly caterpillar eating a milkweed leaf",
+      "imageUrl": "https://picsum.photos/seed/butterfly-larva/800/600",
+      "imageHint": "caterpillar larva"
+    },
+    {
+      "id": "butterfly-pupa",
+      "description": "A green chrysalis hanging from a twig",
+      "imageUrl": "https://picsum.photos/seed/butterfly-pupa/800/600",
+      "imageHint": "chrysalis pupa"
+    },
+    {
+      "id": "butterfly-adult",
+      "description": "A beautiful monarch butterfly with wings spread on a flower",
+      "imageUrl": "https://picsum.photos/seed/butterfly-adult/800/600",
+      "imageHint": "monarch butterfly"
+    },
+    {
+      "id": "sample-obs-1",
+      "description": "Microscopic view of plant cells",
+      "imageUrl": "https://picsum.photos/seed/plant-cells/800/600",
+      "imageHint": "plant cells microscope"
+    }
+  ]
+}
