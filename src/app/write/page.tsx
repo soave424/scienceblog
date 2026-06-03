@@ -14,9 +14,12 @@ import { ImagePlus, Send, Sparkles, Save, Trash2, Camera, AlertCircle } from "lu
 import { aiRealtimeWritingCoach } from "@/ai/flows/ai-realtime-writing-coach-flow";
 import { aiImageObservationGuidance } from "@/ai/flows/ai-image-observation-guidance";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 export default function WritePage() {
+  const { toast } = useToast();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [images, setImages] = useState<string[]>([]);
@@ -28,18 +31,26 @@ export default function WritePage() {
 
   // Simulation of image upload
   const handleAddImage = () => {
+    if (!PlaceHolderImages || PlaceHolderImages.length === 0) {
+      toast({
+        variant: "destructive",
+        title: "이미지를 찾을 수 없습니다",
+        description: "샘플 이미지 데이터가 없습니다.",
+      });
+      return;
+    }
     const randomImage = PlaceHolderImages[Math.floor(Math.random() * PlaceHolderImages.length)];
-    setImages(prev => [...prev, randomImage.imageUrl]);
-    
-    // AI Vision Guidance Trigger
-    triggerVisionGuidance(randomImage.imageUrl);
+    if (randomImage?.imageUrl) {
+      setImages(prev => [...prev, randomImage.imageUrl]);
+      triggerVisionGuidance(randomImage.imageUrl);
+    }
   };
 
   const triggerVisionGuidance = async (imageUrl: string) => {
     try {
       setChatMessages(prev => [...prev, { role: 'ai', text: "이미지를 분석 중입니다..." }]);
       const result = await aiImageObservationGuidance({ 
-        imageDataUri: imageUrl, // In real app, this would be base64, but placeholder works for simulation
+        imageDataUri: imageUrl,
         context: "나비 한살이 또는 식물 관찰"
       });
       if (result.questions && result.questions.length > 0) {
@@ -201,8 +212,4 @@ export default function WritePage() {
       </main>
     </div>
   );
-}
-
-function cn(...classes: any[]) {
-  return classes.filter(Boolean).join(" ");
 }

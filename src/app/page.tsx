@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Header } from "@/components/Header";
@@ -11,8 +12,20 @@ import { cn } from "@/lib/utils";
 
 export default function Home() {
   const recentLogs = [
-    { id: 1, title: "배추흰나비 애벌레 관찰", date: "2026-06-02", status: "작성 중", image: PlaceHolderImages[1]?.imageUrl || "https://picsum.photos/seed/placeholder-1/400/300" },
-    { id: 2, title: "강낭콩의 싹 트는 과정", date: "2026-05-28", status: "완료", image: PlaceHolderImages[4]?.imageUrl || "https://picsum.photos/seed/beans/400/300" },
+    { 
+      id: 1, 
+      title: "배추흰나비 애벌레 관찰", 
+      date: "2026-06-02", 
+      status: "작성 중", 
+      image: PlaceHolderImages?.[1]?.imageUrl || "https://picsum.photos/seed/placeholder-1/400/300" 
+    },
+    { 
+      id: 2, 
+      title: "강낭콩의 싹 트는 과정", 
+      date: "2026-05-28", 
+      status: "완료", 
+      image: PlaceHolderImages?.[4]?.imageUrl || "https://picsum.photos/seed/beans/400/300" 
+    },
   ];
 
   return (

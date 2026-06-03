@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -14,7 +15,7 @@ export default function PracticePage() {
   const [inputText, setInputText] = useState("");
   const [analysis, setAnalysis] = useState<AiFactOpinionAnalyzerOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const sampleImage = PlaceHolderImages[0];
+  const sampleImage = PlaceHolderImages?.[0];
 
   const handleAnalyze = async () => {
     if (!inputText) return;
@@ -50,14 +51,18 @@ export default function PracticePage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
           <Card className="border-none shadow-xl overflow-hidden">
-            <div className="relative aspect-video w-full overflow-hidden">
-              {sampleImage && (
+            <div className="relative aspect-video w-full overflow-hidden bg-muted">
+              {sampleImage?.imageUrl ? (
                 <Image 
                   src={sampleImage.imageUrl} 
                   alt="Observation Mission" 
                   fill 
                   className="object-cover"
                 />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-muted-foreground italic">
+                  이미지 준비 중
+                </div>
               )}
               <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-3 text-sm">
                 미션: 위 이미지를 보고 과학적 관찰 문장을 작성해보세요.
