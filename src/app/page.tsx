@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Header } from "@/components/Header";
@@ -29,7 +28,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background" suppressHydrationWarning>
       <Header />
       <main className="container mx-auto py-10 px-4">
         <section className="mb-12">

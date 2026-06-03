@@ -18,10 +18,10 @@ export default function ButterflyPage() {
   const { toast } = useToast();
 
   const stages = [
-    { name: "알", id: "egg", image: PlaceHolderImages[0]?.imageUrl || "https://picsum.photos/seed/egg/800/600" },
-    { name: "애벌레", id: "larva", image: PlaceHolderImages[1]?.imageUrl || "https://picsum.photos/seed/larva/800/600" },
-    { name: "번데기", id: "pupa", image: PlaceHolderImages[2]?.imageUrl || "https://picsum.photos/seed/pupa/800/600" },
-    { name: "성충", id: "adult", image: PlaceHolderImages[3]?.imageUrl || "https://picsum.photos/seed/adult/800/600" },
+    { name: "알", id: "egg", image: PlaceHolderImages?.[0]?.imageUrl || "https://picsum.photos/seed/egg/800/600" },
+    { name: "애벌레", id: "larva", image: PlaceHolderImages?.[1]?.imageUrl || "https://picsum.photos/seed/larva/800/600" },
+    { name: "번데기", id: "pupa", image: PlaceHolderImages?.[2]?.imageUrl || "https://picsum.photos/seed/pupa/800/600" },
+    { name: "성충", id: "adult", image: PlaceHolderImages?.[3]?.imageUrl || "https://picsum.photos/seed/adult/800/600" },
   ];
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export default function ButterflyPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background" suppressHydrationWarning>
       <Header />
       <main className="container mx-auto py-10 px-4">
         <div className="flex flex-col md:flex-row gap-8">
@@ -142,9 +142,11 @@ export default function ButterflyPage() {
                   배추흰나비의 {activeStage} 단계를 자세히 살펴볼 때는 색깔의 미묘한 변화와 표면의 질감에 집중해보세요. 
                   캡처한 이미지는 자동으로 관찰 일지에 저장됩니다.
                 </p>
-                <Button variant="secondary" className="w-full bg-white text-primary hover:bg-white/90">
-                  일지 작성하러 가기 <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+                <Link href="/write">
+                  <Button variant="secondary" className="w-full bg-white text-primary hover:bg-white/90">
+                    일지 작성하러 가기 <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           </aside>
