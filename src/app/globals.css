@@ -25,6 +25,12 @@
     --input: 142 30% 90%;
     --ring: 142 76% 45%;
     --radius: 2rem; /* 훨씬 더 둥글게 */
+    /* NATURA 브랜드 색상 (emerald-ish) */
+    --brand-50: #ecfdf5;
+    --brand-100: #d1fae5;
+    --brand-500: #10b981;
+    --brand-600: #059669;
+    --brand-700: #047857;
   }
 }
 
@@ -38,17 +44,46 @@
 }
 
 .font-headline {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: "Space Grotesk", sans-serif;
 }
 
 .font-body {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
+}
+
+.font-serif-fancy {
+  font-family: "Playfair Display", serif;
+}
+
+/* NATURA specific helpers */
+.brand-600 {
+  color: var(--brand-600);
+}
+.brand-500 {
+  color: var(--brand-500);
+}
+.bg-brand-50 {
+  background-color: var(--brand-50);
+}
+.bg-brand-500 {
+  background-color: var(--brand-500);
+}
+.text-brand-600 {
+  color: var(--brand-600);
+}
+.text-brand-400 {
+  color: #34d399;
 }
 
 /* 몽글몽글한 애니메이션 */
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .animate-float {
@@ -56,9 +91,15 @@
 }
 
 @keyframes pop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .hover-pop:hover {

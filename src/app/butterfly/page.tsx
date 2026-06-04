@@ -1,11 +1,22 @@
-
 "use client";
 
 import { useState, useEffect } from "react";
-import { Header } from "@/components/Header";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Camera, Play, ArrowRight, Info, CheckCircle2 } from "lucide-react";
+import {
+  Sparkles,
+  Camera,
+  Play,
+  ArrowRight,
+  Info,
+  CheckCircle2,
+} from "lucide-react";
 import { generateTargetedObservationPrompts } from "@/ai/flows/ai-targeted-observation-prompts";
 import Image from "next/image";
 import Link from "next/link";
@@ -20,10 +31,34 @@ export default function ButterflyPage() {
   const { toast } = useToast();
 
   const stages = [
-    { name: "알", id: "egg", image: PlaceHolderImages?.[0]?.imageUrl || "https://picsum.photos/seed/egg/800/600" },
-    { name: "애벌레", id: "larva", image: PlaceHolderImages?.[1]?.imageUrl || "https://picsum.photos/seed/larva/800/600" },
-    { name: "번데기", id: "pupa", image: PlaceHolderImages?.[2]?.imageUrl || "https://picsum.photos/seed/pupa/800/600" },
-    { name: "성충", id: "adult", image: PlaceHolderImages?.[3]?.imageUrl || "https://picsum.photos/seed/adult/800/600" },
+    {
+      name: "알",
+      id: "egg",
+      image:
+        PlaceHolderImages?.[0]?.imageUrl ||
+        "https://picsum.photos/seed/egg/800/600",
+    },
+    {
+      name: "애벌레",
+      id: "larva",
+      image:
+        PlaceHolderImages?.[1]?.imageUrl ||
+        "https://picsum.photos/seed/larva/800/600",
+    },
+    {
+      name: "번데기",
+      id: "pupa",
+      image:
+        PlaceHolderImages?.[2]?.imageUrl ||
+        "https://picsum.photos/seed/pupa/800/600",
+    },
+    {
+      name: "성충",
+      id: "adult",
+      image:
+        PlaceHolderImages?.[3]?.imageUrl ||
+        "https://picsum.photos/seed/adult/800/600",
+    },
   ];
 
   useEffect(() => {
@@ -33,7 +68,9 @@ export default function ButterflyPage() {
   const loadPrompts = async (stage: string) => {
     setIsLoadingPrompts(true);
     try {
-      const result = await generateTargetedObservationPrompts({ lifeCycleStage: stage });
+      const result = await generateTargetedObservationPrompts({
+        lifeCycleStage: stage,
+      });
       setPrompts(result.observationPrompts);
     } catch (e) {
       console.error(e);
@@ -45,21 +82,27 @@ export default function ButterflyPage() {
   const handleCapture = () => {
     toast({
       title: "화면 캡처 완료!",
-      description: "캡처한 이미지가 '관찰 일지 작성' 에디터로 자동 전송되었습니다.",
+      description:
+        "캡처한 이미지가 '관찰 일지 작성' 에디터로 자동 전송되었습니다.",
     });
   };
 
   return (
     <div className="min-h-screen bg-background" suppressHydrationWarning>
-      <Header />
       <main className="container mx-auto py-10 px-4">
         <div className="flex flex-col md:flex-row gap-8">
           {/* Main Media Viewer */}
           <div className="flex-1 space-y-6">
             <div className="flex items-center justify-between">
-              <h1 className="font-headline text-3xl font-bold text-primary">나비 한살이 가상 관찰</h1>
+              <h1 className="font-headline text-3xl font-bold text-primary">
+                나비 한살이 가상 관찰
+              </h1>
               <div className="flex gap-2">
-                <Button variant="outline" onClick={handleCapture} className="rounded-xl border-2 hover:bg-primary/5">
+                <Button
+                  variant="outline"
+                  onClick={handleCapture}
+                  className="rounded-xl border-2 hover:bg-primary/5"
+                >
                   <Camera className="mr-2 h-4 w-4" /> 현재 화면 캡처
                 </Button>
                 <Button className="rounded-xl shadow-lg shadow-primary/20">
@@ -69,14 +112,16 @@ export default function ButterflyPage() {
             </div>
 
             <Card className="border-none shadow-2xl overflow-hidden rounded-[2rem] bg-black aspect-video relative group">
-              <Image 
-                src={stages.find(s => s.name === activeStage)?.image || ""} 
+              <Image
+                src={stages.find((s) => s.name === activeStage)?.image || ""}
                 alt={activeStage}
                 fill
                 className="object-contain"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-8">
-                <p className="text-white text-lg font-medium">배추흰나비 {activeStage} 단계 관찰 중...</p>
+                <p className="text-white text-lg font-medium">
+                  배추흰나비 {activeStage} 단계 관찰 중...
+                </p>
               </div>
             </Card>
 
@@ -87,13 +132,18 @@ export default function ButterflyPage() {
                   onClick={() => setActiveStage(stage.name)}
                   className={cn(
                     "flex flex-col items-center gap-2 p-4 rounded-2xl transition-all border-2",
-                    activeStage === stage.name 
-                      ? "bg-primary border-primary text-white shadow-xl scale-105" 
-                      : "bg-white border-transparent text-muted-foreground hover:bg-muted"
+                    activeStage === stage.name
+                      ? "bg-primary border-primary text-white shadow-xl scale-105"
+                      : "bg-white border-transparent text-muted-foreground hover:bg-muted",
                   )}
                 >
                   <div className="relative h-12 w-12 rounded-full overflow-hidden border-2 border-white/50">
-                    <Image src={stage.image} alt={stage.name} fill className="object-cover" />
+                    <Image
+                      src={stage.image}
+                      alt={stage.name}
+                      fill
+                      className="object-cover"
+                    />
                   </div>
                   <span className="text-sm font-bold">{stage.name}</span>
                 </button>
@@ -116,16 +166,21 @@ export default function ButterflyPage() {
               <CardContent className="p-6">
                 {isLoadingPrompts ? (
                   <div className="space-y-4 animate-pulse">
-                    {[1, 2, 3].map(i => (
+                    {[1, 2, 3].map((i) => (
                       <div key={i} className="h-20 bg-muted rounded-xl" />
                     ))}
                   </div>
                 ) : (
                   <div className="space-y-4">
                     {prompts.map((prompt, idx) => (
-                      <div key={idx} className="flex gap-3 p-4 bg-muted/50 rounded-2xl border border-border group hover:border-primary/30 transition-colors">
+                      <div
+                        key={idx}
+                        className="flex gap-3 p-4 bg-muted/50 rounded-2xl border border-border group hover:border-primary/30 transition-colors"
+                      >
                         <CheckCircle2 className="h-5 w-5 text-primary/40 shrink-0 mt-0.5 group-hover:text-primary transition-colors" />
-                        <p className="text-sm font-medium leading-relaxed">{prompt}</p>
+                        <p className="text-sm font-medium leading-relaxed">
+                          {prompt}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -141,11 +196,15 @@ export default function ButterflyPage() {
               </CardHeader>
               <CardContent className="p-6 pt-0 space-y-4">
                 <p className="text-sm opacity-90 leading-relaxed">
-                  배추흰나비의 {activeStage} 단계를 자세히 살펴볼 때는 색깔의 미묘한 변화와 표면의 질감에 집중해보세요. 
-                  캡처한 이미지는 자동으로 관찰 일지에 저장됩니다.
+                  배추흰나비의 {activeStage} 단계를 자세히 살펴볼 때는 색깔의
+                  미묘한 변화와 표면의 질감에 집중해보세요. 캡처한 이미지는
+                  자동으로 관찰 일지에 저장됩니다.
                 </p>
                 <Link href="/write">
-                  <Button variant="secondary" className="w-full bg-white text-primary hover:bg-white/90 font-bold rounded-xl">
+                  <Button
+                    variant="secondary"
+                    className="w-full bg-white text-primary hover:bg-white/90 font-bold rounded-xl"
+                  >
                     일지 작성하러 가기 <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>

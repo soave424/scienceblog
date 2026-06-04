@@ -1,9 +1,16 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { BookOpen, Microscope, Sparkles, PenTool, LayoutDashboard, LogOut, LogIn } from "lucide-react";
+import {
+  BookOpen,
+  Microscope,
+  Sparkles,
+  PenTool,
+  LayoutDashboard,
+  LogOut,
+  LogIn,
+} from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useUser, useAuth } from "@/firebase";
@@ -30,74 +37,114 @@ export function Header() {
   if (!mounted) return null;
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-md border-b-4 border-primary/10" suppressHydrationWarning>
-      <div className="container mx-auto flex h-24 items-center justify-between px-6" suppressHydrationWarning>
-        <Link href="/" className="flex items-center gap-4 group">
-          <div className="flex h-14 w-14 items-center justify-center rounded-[1.25rem] bg-primary text-white shadow-xl shadow-primary/20 transition-all group-hover:scale-110 group-hover:rotate-6">
-            <BookOpen className="h-8 w-8" />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-headline text-2xl font-black tracking-tight text-primary leading-tight">
-              사이언스 탐험대
+    <header
+      className="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800"
+      suppressHydrationWarning
+    >
+      <div
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
+        suppressHydrationWarning
+      >
+        <div className="flex items-center gap-8">
+          <Link
+            href="/"
+            className="flex items-center gap-2"
+            onClick={(e) => {}}
+          >
+            <span className="font-serif-fancy text-2xl font-bold tracking-wider text-brand-600 dark:text-brand-500">
+              NATURA
             </span>
-            <span className="text-xs text-muted-foreground font-black tracking-widest uppercase">
-              Science Expedition
+            <span className="text-xs bg-brand-100 dark:bg-brand-900 text-brand-600 dark:text-brand-300 px-2 py-0.5 rounded-full font-semibold">
+              DIARY
             </span>
-          </div>
-        </Link>
+          </Link>
 
-        <nav className="hidden items-center gap-2 md:flex" suppressHydrationWarning>
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "flex items-center gap-2 px-6 py-3 rounded-[1.5rem] text-base font-black transition-all",
-                  isActive 
-                    ? "bg-primary text-white shadow-lg scale-105" 
-                    : "text-muted-foreground hover:bg-primary/10 hover:text-primary"
-                )}
-              >
-                <Icon className={cn("h-5 w-5", isActive ? "animate-bounce" : "")} />
-                {item.name}
-              </Link>
-            );
-          })}
-        </nav>
+          <nav className="hidden md:flex items-center gap-1">
+            {["전체", "식물·꽃", "조류·새", "곤충·소생물", "생태·숲"].map(
+              (cat) => (
+                <button
+                  key={cat}
+                  onClick={() => {}}
+                  className="px-4 py-2 rounded-lg text-sm transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
+                >
+                  {cat}
+                </button>
+              ),
+            )}
+          </nav>
+        </div>
 
-        <div className="flex items-center gap-4" suppressHydrationWarning>
-          {user ? (
-            <div className="flex items-center gap-4">
-              <div className="hidden sm:flex flex-col items-end">
-                <span className="text-sm font-black text-primary">{user.displayName} 대원</span>
-                <span className="text-[10px] font-black text-accent bg-accent/10 px-2 py-0.5 rounded-full">탐험 레벨 1</span>
-              </div>
-              <div className="h-12 w-12 rounded-full border-4 border-primary/20 overflow-hidden shadow-md">
-                <img 
-                  src={user.photoURL || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.uid}`} 
-                  alt="Profile" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={() => auth && signOut(auth)} 
-                className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-full"
+        <div className="flex items-center gap-4">
+          <div className="relative hidden sm:block">
+            <input
+              type="text"
+              placeholder="식물, 조류, 숲속 검색..."
+              className="w-48 focus:w-64 transition-all duration-300 bg-slate-100 dark:bg-slate-800 border-none rounded-full py-1.5 pl-4 pr-10 text-sm outline-none focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-200"
+            />
+            <div className="absolute right-3 top-2 text-slate-400">
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                <LogOut className="h-5 w-5" />
-              </Button>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                ></path>
+              </svg>
             </div>
-          ) : (
-            <Link href="/login">
-              <Button className="rounded-[1.5rem] bg-accent text-accent-foreground hover:bg-accent/90 px-8 py-6 text-lg font-black shadow-lg btn-kid">
-                <LogIn className="mr-2 h-5 w-5" /> 탐험대 합류
-              </Button>
-            </Link>
-          )}
+          </div>
+
+          <button
+            className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition"
+            aria-label="Toggle Dark Mode"
+          >
+            <svg
+              className="w-5 h-5 text-amber-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-11.314l.707.707m11.314 11.314l.707-.707M12 7a5 5 0 110 10 5 5 0 010-10z"
+              ></path>
+            </svg>
+          </button>
+
+          <div className="flex items-center gap-2">
+            {user && !user.isAnonymous ? (
+              <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800/80 pl-2 pr-1 py-1 rounded-full border border-slate-200 dark:border-slate-700">
+                <img
+                  src={
+                    user.photoURL ||
+                    "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&q=80"
+                  }
+                  className="w-6 h-6 rounded-full border border-brand-500 object-cover shadow-inner"
+                  title={user.displayName}
+                />
+                <button
+                  onClick={() => auth && signOut(auth)}
+                  className="text-xs text-slate-600 dark:text-slate-300 hover:text-red-500 dark:hover:text-red-400 px-2 py-1 rounded-lg transition font-medium flex items-center gap-1"
+                  title="로그아웃"
+                >
+                  로그아웃
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => {}}
+                className="text-xs bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-3 py-1.5 rounded-full flex items-center gap-1.5 transition border border-slate-200 dark:border-slate-700"
+              >
+                구글 로그인
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </header>
