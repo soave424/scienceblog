@@ -1,5 +1,7 @@
+
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { BookOpen, Microscope, Sparkles, PenTool, LayoutDashboard, LogOut, LogIn } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -12,6 +14,11 @@ export function Header() {
   const pathname = usePathname();
   const { user } = useUser();
   const auth = useAuth();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const navItems = [
     { name: "나의 탐험", href: "/", icon: LayoutDashboard },
@@ -20,9 +27,11 @@ export function Header() {
     { name: "나비 탐험", href: "/butterfly", icon: Sparkles },
   ];
 
+  if (!mounted) return null;
+
   return (
     <header className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-md border-b-4 border-primary/10" suppressHydrationWarning>
-      <div className="container mx-auto flex h-24 items-center justify-between px-6">
+      <div className="container mx-auto flex h-24 items-center justify-between px-6" suppressHydrationWarning>
         <Link href="/" className="flex items-center gap-4 group">
           <div className="flex h-14 w-14 items-center justify-center rounded-[1.25rem] bg-primary text-white shadow-xl shadow-primary/20 transition-all group-hover:scale-110 group-hover:rotate-6">
             <BookOpen className="h-8 w-8" />
@@ -37,7 +46,7 @@ export function Header() {
           </div>
         </Link>
 
-        <nav className="hidden items-center gap-2 md:flex">
+        <nav className="hidden items-center gap-2 md:flex" suppressHydrationWarning>
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
@@ -59,7 +68,7 @@ export function Header() {
           })}
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4" suppressHydrationWarning>
           {user ? (
             <div className="flex items-center gap-4">
               <div className="hidden sm:flex flex-col items-end">
@@ -84,8 +93,8 @@ export function Header() {
             </div>
           ) : (
             <Link href="/login">
-              <Button className="rounded-[1.5rem] bg-accent text-accent-foreground hover:bg-accent/90 px-8 py-6 text-lg font-black shadow-lg">
-                <LogIn className="mr-2 h-5 w-5" /> 로그인
+              <Button className="rounded-[1.5rem] bg-accent text-accent-foreground hover:bg-accent/90 px-8 py-6 text-lg font-black shadow-lg btn-kid">
+                <LogIn className="mr-2 h-5 w-5" /> 탐험대 합류
               </Button>
             </Link>
           )}

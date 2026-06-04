@@ -1,5 +1,7 @@
+
 "use client";
 
+import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,7 +14,12 @@ import { useUser } from "@/firebase";
 
 export default function Home() {
   const { user } = useUser();
-  
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // 샘플 데이터
   const recentLogs = [
     { 
@@ -31,14 +38,19 @@ export default function Home() {
     },
   ];
 
+  if (!mounted) return null;
+
   return (
     <div className="min-h-screen bg-background" suppressHydrationWarning>
       <Header />
       <main className="container mx-auto py-8 px-4">
         {/* 상단 환영 영역 */}
         <section className="mb-10">
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between bg-white p-8 rounded-[3rem] shadow-xl border-4 border-primary/20 animate-in fade-in slide-in-from-top-4 duration-700">
-            <div className="flex items-center gap-6">
+          <div 
+            className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between bg-white p-8 rounded-[3rem] shadow-xl border-4 border-primary/20 animate-in fade-in slide-in-from-top-4 duration-700"
+            suppressHydrationWarning
+          >
+            <div className="flex items-center gap-6" suppressHydrationWarning>
               <div className="h-24 w-24 rounded-full border-4 border-accent overflow-hidden shadow-lg bg-accent/20 animate-bounce-subtle">
                 <img 
                   src={user?.photoURL || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.uid || 'guest'}`} 
@@ -46,17 +58,17 @@ export default function Home() {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div>
+              <div suppressHydrationWarning>
                 <h1 className="font-headline text-3xl font-black text-primary mb-1">
-                  안녕, {user?.displayName || '반가운'} 대원!
+                  안녕, {user?.displayName || '꼬마'} 탐험대원!
                 </h1>
                 <p className="text-muted-foreground font-bold flex items-center gap-2">
-                  <Star className="h-5 w-5 text-accent fill-accent" /> 오늘도 비밀을 찾아 떠나볼까?
+                  <Star className="h-5 w-5 text-accent fill-accent" /> 오늘도 신비한 과학의 세계로 떠나볼까?
                 </p>
               </div>
             </div>
             <Link href="/write">
-              <Button size="lg" className="rounded-[2rem] px-10 py-10 text-2xl font-black shadow-xl bg-primary hover:bg-primary/90 hover:scale-105 transition-transform">
+              <Button size="lg" className="rounded-[2rem] px-10 py-10 text-2xl font-black shadow-xl bg-primary hover:bg-primary/90 hover:scale-105 transition-transform btn-kid">
                 <PenTool className="mr-3 h-8 w-8" />
                 일지 쓰러 가기!
               </Button>
@@ -67,22 +79,23 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-10">
             {/* 최근 기록 */}
-            <section>
+            <section suppressHydrationWarning>
               <div className="flex items-center justify-between mb-6 px-4">
                 <h2 className="font-headline text-2xl font-black flex items-center gap-2 text-primary">
                   <Clock className="h-7 w-7" /> 나의 탐험 일지
                 </h2>
-                <Button variant="ghost" className="text-primary font-bold hover:bg-primary/5">모두 보기 <ArrowRight className="ml-2 h-4 w-4" /></Button>
+                <Button variant="ghost" className="text-primary font-bold hover:bg-primary/5 rounded-full">모두 보기 <ArrowRight className="ml-2 h-4 w-4" /></Button>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6" suppressHydrationWarning>
                 {recentLogs.map((log) => (
-                  <Card key={log.id} className="overflow-hidden group hover:shadow-2xl transition-all border-4 border-white shadow-lg rounded-[3rem] bg-white">
+                  <Card key={log.id} className="overflow-hidden group hover:shadow-2xl transition-all border-4 border-white shadow-lg rounded-[3rem] bg-white" suppressHydrationWarning>
                     <div className="relative h-52 w-full overflow-hidden">
                       <Image
                         src={log.image}
                         alt={log.title}
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-700"
+                        data-ai-hint="butterfly nature"
                       />
                       <div className="absolute top-4 right-4">
                         <span className={cn(
@@ -108,7 +121,10 @@ export default function Home() {
             </section>
 
             {/* 오늘의 미션 */}
-            <section className="bg-gradient-to-br from-accent/20 to-accent/5 rounded-[4rem] p-10 shadow-lg border-4 border-accent/20 relative overflow-hidden group">
+            <section 
+              className="bg-gradient-to-br from-accent/20 to-accent/5 rounded-[4rem] p-10 shadow-lg border-4 border-accent/20 relative overflow-hidden group"
+              suppressHydrationWarning
+            >
               <div className="absolute -right-10 -top-10 text-accent/10 group-hover:rotate-45 transition-transform duration-1000">
                 <Rocket size={250} />
               </div>
@@ -122,7 +138,7 @@ export default function Home() {
                     나비 번데기의 색깔을 관찰하고,<br/><span className="text-accent underline decoration-4 underline-offset-4">진짜 사실</span>을 3개만 적어보세요!
                   </p>
                   <Link href="/butterfly">
-                    <Button className="rounded-[2rem] px-10 py-8 text-xl font-black bg-accent text-accent-foreground hover:bg-accent/90 shadow-xl hover:scale-105 transition-transform">탐험 시작!</Button>
+                    <Button className="rounded-[2rem] px-10 py-8 text-xl font-black bg-accent text-accent-foreground hover:bg-accent/90 shadow-xl hover:scale-105 transition-transform btn-kid">탐험 시작!</Button>
                   </Link>
                 </div>
               </div>
@@ -130,28 +146,28 @@ export default function Home() {
           </div>
 
           {/* 사이드바 */}
-          <aside className="space-y-8">
-            <Card className="border-4 border-primary/10 shadow-xl overflow-hidden rounded-[3rem] bg-white">
-              <CardHeader className="bg-primary p-8 text-white text-center">
+          <aside className="space-y-8" suppressHydrationWarning>
+            <Card className="border-4 border-primary/10 shadow-xl overflow-hidden rounded-[3rem] bg-white" suppressHydrationWarning>
+              <CardHeader className="bg-primary p-8 text-white text-center" suppressHydrationWarning>
                 <CardTitle className="text-2xl font-black flex items-center justify-center gap-2">
                   <Trophy className="h-8 w-8 text-accent animate-pulse" /> 훌륭한 탐험가
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-8">
                 <div className="space-y-8">
-                  <div className="flex flex-col items-center gap-2 bg-muted/50 p-6 rounded-[2.5rem]">
+                  <div className="flex flex-col items-center gap-2 bg-muted/50 p-6 rounded-[2.5rem]" suppressHydrationWarning>
                     <span className="font-bold text-muted-foreground">내가 찾은 비밀</span>
                     <span className="font-black text-4xl text-primary">12개</span>
                   </div>
                   <div className="space-y-4">
-                    <div className="flex justify-between items-center px-2">
+                    <div className="flex justify-between items-center px-2" suppressHydrationWarning>
                       <span className="font-bold text-muted-foreground text-lg">성장 에너지</span>
                       <span className="font-black text-2xl text-accent">85%</span>
                     </div>
                     <div className="h-6 w-full bg-muted rounded-full overflow-hidden border-4 border-white shadow-inner">
                       <div className="h-full bg-accent w-[85%] rounded-full transition-all duration-1000" />
                     </div>
-                    <p className="text-sm font-bold text-center text-primary mt-4 bg-primary/5 py-3 rounded-2xl border border-primary/10">
+                    <p className="text-sm font-bold text-center text-primary mt-4 bg-primary/5 py-3 rounded-2xl border border-primary/10" suppressHydrationWarning>
                       진짜 과학자가 다 되었네요! 👏
                     </p>
                   </div>
@@ -159,8 +175,8 @@ export default function Home() {
               </CardContent>
             </Card>
 
-            <Card className="border-4 border-accent/10 shadow-xl rounded-[3.5rem] bg-white p-4">
-              <CardHeader className="p-6 pb-2 text-center">
+            <Card className="border-4 border-accent/10 shadow-xl rounded-[3.5rem] bg-white p-4" suppressHydrationWarning>
+              <CardHeader className="p-6 pb-2 text-center" suppressHydrationWarning>
                 <CardTitle className="text-xl font-black text-primary">비밀 도구 상자</CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col gap-4 p-4">
