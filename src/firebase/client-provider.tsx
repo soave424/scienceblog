@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { ReactNode, useMemo } from 'react';
@@ -10,9 +11,9 @@ import { FirebaseErrorListener } from '@/components/FirebaseErrorListener';
 
 export function FirebaseClientProvider({ children }: { children: ReactNode }) {
   const firebaseValues = useMemo(() => {
-    // API 키가 없는 경우 초기화를 시도하지 않고 더미 객체를 반환하여 크래시를 방지합니다.
-    if (!firebaseConfig.apiKey) {
-      console.error("Firebase API Key is missing. Please check your .env file.");
+    // API 키가 없어도 앱이 크래시되지 않고 UI를 보여줄 수 있도록 수정
+    if (!firebaseConfig.apiKey || firebaseConfig.apiKey === "") {
+      console.warn("Firebase API Key가 설정되지 않았습니다. 로그인 및 데이터 저장 기능이 작동하지 않을 수 있습니다.");
       return { firebaseApp: null, firestore: null, auth: null };
     }
 
@@ -22,32 +23,17 @@ export function FirebaseClientProvider({ children }: { children: ReactNode }) {
       const auth = getAuth(firebaseApp);
       return { firebaseApp, firestore, auth };
     } catch (error) {
-      console.error("Firebase initialization failed:", error);
+      console.error("Firebase 초기화 실패:", error);
       return { firebaseApp: null, firestore: null, auth: null };
     }
   }, []);
 
-  // 초기화에 실패한 경우 최소한의 컨텍스트 제공
-  if (!firebaseValues.firebaseApp) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background p-4 text-center">
-        <div className="bg-white p-8 rounded-[3rem] shadow-xl border-2 border-primary/20 max-w-md">
-          <h1 className="text-2xl font-black text-primary mb-4">탐험 준비 중...</h1>
-          <p className="text-muted-foreground font-bold mb-6">
-            Firebase 설정이 아직 완료되지 않았습니다.<br/>
-            잠시 후 다시 시도해주세요!
-          </p>
-          <div className="animate-bounce text-4xl">🚀</div>
-        </div>
-      </div>
-    );
-  }
-
+  // Firebase가 초기화되지 않았더라도 UI(children)를 렌더링하도록 변경 (탭 클릭 가능하게 함)
   return (
     <FirebaseProvider 
-      firebaseApp={firebaseValues.firebaseApp} 
-      firestore={firebaseValues.firestore!} 
-      auth={firebaseValues.auth!}
+      firebaseApp={firebaseValues.firebaseApp as any} 
+      firestore={firebaseValues.firestore as any} 
+      auth={firebaseValues.auth as any}
     >
       <FirebaseErrorListener />
       {children}

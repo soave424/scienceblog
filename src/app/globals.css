@@ -5,27 +5,27 @@
 
 @layer base {
   :root {
-    /* 초등학생 친화적인 밝고 따뜻한 색상 (Green & Yellow) */
-    --background: 80 40% 98%;
+    /* 초등학생 탐험대 컨셉: 밝은 연두, 따뜻한 노랑, 활기찬 주황 */
+    --background: 80 60% 98%;
     --foreground: 160 50% 10%;
     --card: 0 0% 100%;
     --card-foreground: 160 50% 15%;
     --popover: 0 0% 100%;
     --popover-foreground: 160 50% 15%;
-    --primary: 142 76% 36%;
+    --primary: 142 76% 45%; /* 밝은 초록 */
     --primary-foreground: 0 0% 100%;
-    --secondary: 142 30% 92%;
-    --secondary-foreground: 142 50% 20%;
+    --secondary: 48 100% 90%; /* 아주 연한 노랑 */
+    --secondary-foreground: 48 100% 20%;
     --muted: 142 20% 94%;
     --muted-foreground: 160 20% 40%;
-    --accent: 48 100% 50%; /* Sunny Yellow */
-    --accent-foreground: 48 50% 10%;
+    --accent: 35 100% 55%; /* 선명한 주황 */
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 142 20% 88%;
-    --input: 142 20% 88%;
-    --ring: 142 76% 36%;
-    --radius: 1.5rem; /* 더 둥글둥글하게 */
+    --border: 142 30% 90%;
+    --input: 142 30% 90%;
+    --ring: 142 76% 45%;
+    --radius: 2rem; /* 훨씬 더 둥글게 */
   }
 }
 
@@ -34,7 +34,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-body;
   }
 }
 
@@ -46,12 +46,27 @@
   font-family: 'Inter', sans-serif;
 }
 
-/* 아기자기한 애니메이션 */
-@keyframes bounce-subtle {
+/* 몽글몽글한 애니메이션 */
+@keyframes float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+  50% { transform: translateY(-10px); }
 }
 
-.animate-bounce-subtle {
-  animation: bounce-subtle 2s infinite ease-in-out;
+.animate-float {
+  animation: float 3s infinite ease-in-out;
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.hover-pop:hover {
+  animation: pop 0.3s ease-out forwards;
+}
+
+/* 초등학생용 큰 버튼 스타일 */
+.btn-kid {
+  @apply rounded-[2rem] shadow-lg transition-all active:scale-95 font-black;
 }
