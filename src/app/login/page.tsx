@@ -30,7 +30,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-primary flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-primary flex items-center justify-center p-4 relative overflow-hidden" suppressHydrationWarning>
       {/* Background Decorations */}
       <div className="absolute top-10 left-10 text-white/20 animate-bounce-subtle">
         <Sparkles size={80} />

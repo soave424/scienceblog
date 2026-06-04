@@ -36,7 +36,7 @@ export default function PracticePage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background" suppressHydrationWarning>
       <Header />
       <main className="container mx-auto py-10 px-4 max-w-5xl">
         <div className="text-center mb-10">
@@ -119,7 +119,7 @@ export default function PracticePage() {
             )}
 
             {analysis && (
-              <div className="space-y-4">
+              <div className="space-y-4" suppressHydrationWarning>
                 <h3 className="font-headline text-2xl font-bold flex items-center gap-2">
                   <Sparkles className="h-6 w-6 text-accent" />
                   분석 결과
