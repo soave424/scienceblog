@@ -1,311 +1,310 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import {
-  PenTool,
-  Microscope,
-  Sparkles,
-  ArrowRight,
-  Clock,
-  Star,
-  Trophy,
-  Rocket,
-} from "lucide-react";
+import { useUser, useAuth } from "@/firebase";
+import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 import Link from "next/link";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { cn } from "@/lib/utils";
-import { useUser } from "@/firebase";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Home() {
   const { user } = useUser();
+  const auth = useAuth();
+  const { toast } = useToast();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // 샘플 데이터
-  const recentLogs = [
+  // 샘플 포스트 데이터
+  const posts = [
     {
       id: 1,
-      title: "노란 알에서 깨어난 애벌레",
+      title: "숲속의 숨은 보석, 봄에 피는 봄꽃 야생화 관찰기",
+      summary:
+        "혹독한 겨울의 언 땅을 뚫고 가장 먼저 고개를 내미는 복수초와 바람꽃.",
+      category: "식물·꽃",
+      author: "숲길 산책자",
       date: "2026-06-02",
-      status: "작성 중",
+      readTime: 5,
       image:
-        PlaceHolderImages?.[1]?.imageUrl ||
-        "https://picsum.photos/seed/placeholder-1/400/300",
+        PlaceHolderImages?.[0]?.imageUrl ||
+        "https://images.unsplash.com/photo-1470240731273-7821a6eeb6bd?auto=format&fit=crop&w=800&q=80",
+      tags: ["야생화", "복수초", "봄꽃"],
+      userId: "user1",
+      userPhoto: "https://api.dicebear.com/7.x/avataaars/svg?seed=user1",
+      userDisplayName: "숲길 산책자",
     },
     {
       id: 2,
-      title: "강낭콩이 쑤욱! 자랐어요",
+      title: "베란다 정원에 찾아온 박새 가족의 30일 이소 기록",
+      summary:
+        "인공 둥지 상자에 자리를 틀고 알을 낳아 새끼를 키워내기까지의 감동 기록.",
+      category: "조류·새",
+      author: "날개 지킴이",
       date: "2026-05-28",
-      status: "완료",
+      readTime: 6,
       image:
-        PlaceHolderImages?.[4]?.imageUrl ||
-        "https://picsum.photos/seed/beans/400/300",
+        PlaceHolderImages?.[1]?.imageUrl ||
+        "https://images.unsplash.com/photo-1452570053594-1b985d6ea890?auto=format&fit=crop&w=800&q=80",
+      tags: ["박새", "육아일기", "조류"],
+      userId: "user2",
+      userPhoto: "https://api.dicebear.com/7.x/avataaars/svg?seed=user2",
+      userDisplayName: "날개 지킴이",
     },
   ];
+
+  const handleGoogleLogin = async () => {
+    if (!auth) {
+      toast({
+        variant: "destructive",
+        title: "설정 오류",
+        description: "Firebase 설정이 완료되지 않았습니다.",
+      });
+      return;
+    }
+    try {
+      const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: "select_account" });
+      await signInWithPopup(auth, provider);
+    } catch (error: any) {
+      console.error("Login failed:", error);
+    }
+  };
+
+  const handleLogout = async () => {
+    if (auth) {
+      try {
+        await signOut(auth);
+      } catch (error) {
+        console.error("Logout failed:", error);
+      }
+    }
+  };
 
   if (!mounted) return null;
 
   return (
-    <div className="min-h-screen bg-background" suppressHydrationWarning>
-      <main className="container mx-auto py-8 px-4">
-        {/* 상단 환영 영역 */}
-        <section className="mb-10">
-          <div
-            className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between bg-white p-8 rounded-[3rem] shadow-xl border-4 border-primary/20 animate-in fade-in slide-in-from-top-4 duration-700"
-            suppressHydrationWarning
-          >
-            <div className="flex items-center gap-6" suppressHydrationWarning>
-              <div className="h-24 w-24 rounded-full border-4 border-accent overflow-hidden shadow-lg bg-accent/20 animate-bounce-subtle">
-                <img
-                  src={
-                    user?.photoURL ||
-                    `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.uid || "guest"}`
-                  }
-                  alt="Profile"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div suppressHydrationWarning>
-                <h1 className="font-headline text-3xl font-black text-primary mb-1">
-                  안녕, {user?.displayName || "꼬마"} 탐험대원!
-                </h1>
-                <p className="text-muted-foreground font-bold flex items-center gap-2">
-                  <Star className="h-5 w-5 text-accent fill-accent" /> 오늘도
-                  신비한 과학의 세계로 떠나볼까?
-                </p>
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+      {/* Search Results Info */}
+      {false && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 mb-6 flex justify-between items-center bg-brand-50 dark:bg-brand-900/30 border border-brand-100 dark:border-brand-800 p-4 rounded-xl">
+          <div className="text-sm">검색 결과</div>
+          <button className="text-xs text-slate-400 hover:text-slate-600 underline">
+            초기화
+          </button>
+        </div>
+      )}
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Posts Feed */}
+          <div className="lg:col-span-8 space-y-8">
+            {/* Section Header */}
+            <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-4">
+              <h3 className="text-xl font-bold flex items-center gap-2 text-slate-900 dark:text-white">
+                <span className="w-1.5 h-6 bg-brand-600 rounded-full"></span>
+                <span>관찰 일지 기록</span>
+              </h3>
+              <div className="text-xs text-slate-400">
+                총{" "}
+                <span className="text-slate-600 dark:text-slate-200 font-bold">
+                  {posts.length}
+                </span>
+                개의 기록
               </div>
             </div>
-            <Link href="/write">
-              <Button
-                size="lg"
-                className="rounded-[2rem] px-10 py-10 text-2xl font-black shadow-xl bg-primary hover:bg-primary/90 hover:scale-105 transition-transform btn-kid"
-              >
-                <PenTool className="mr-3 h-8 w-8" />
-                일지 쓰러 가기!
-              </Button>
-            </Link>
-          </div>
-        </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-10">
-            {/* 최근 기록 */}
-            <section suppressHydrationWarning>
-              <div className="flex items-center justify-between mb-6 px-4">
-                <h2 className="font-headline text-2xl font-black flex items-center gap-2 text-primary">
-                  <Clock className="h-7 w-7" /> 나의 탐험 일지
-                </h2>
-                <Button
-                  variant="ghost"
-                  className="text-primary font-bold hover:bg-primary/5 rounded-full"
+            {/* Post Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {posts.map((post) => (
+                <article
+                  key={post.id}
+                  className="bg-white dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800/60 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:border-brand-200 dark:hover:border-slate-700 transition-all duration-300 flex flex-col group h-full"
                 >
-                  모두 보기 <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </div>
-              <div
-                className="grid grid-cols-1 md:grid-cols-2 gap-6"
-                suppressHydrationWarning
-              >
-                {recentLogs.map((log) => (
-                  <Card
-                    key={log.id}
-                    className="overflow-hidden group hover:shadow-2xl transition-all border-4 border-white shadow-lg rounded-[3rem] bg-white"
-                    suppressHydrationWarning
-                  >
-                    <div className="relative h-52 w-full overflow-hidden">
-                      <Image
-                        src={log.image}
-                        alt={log.title}
-                        fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-700"
-                        data-ai-hint="butterfly nature"
-                      />
-                      <div className="absolute top-4 right-4">
-                        <span
-                          className={cn(
-                            "px-5 py-2 rounded-full text-sm font-black shadow-md",
-                            log.status === "작성 중"
-                              ? "bg-accent text-accent-foreground"
-                              : "bg-primary text-white",
-                          )}
-                        >
-                          {log.status}
+                  {/* Thumbnail */}
+                  <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-slate-900">
+                    <Image
+                      src={post.image}
+                      alt={post.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <span className="absolute top-4 left-4 z-10 bg-white/95 dark:bg-slate-900/95 text-brand-600 dark:text-brand-400 text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                      {post.category}
+                    </span>
+                  </div>
+
+                  {/* Card Body */}
+                  <div className="p-6 flex flex-col justify-between flex-grow space-y-4">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 text-xs text-slate-400">
+                        <span>{post.date}</span>
+                        <span>•</span>
+                        <span>{post.readTime}분 분량</span>
+                      </div>
+                      <h4 className="text-lg font-bold tracking-tight text-slate-900 dark:text-white line-clamp-2 hover:text-brand-600 cursor-pointer transition-colors">
+                        {post.title}
+                      </h4>
+                      <p className="text-slate-500 dark:text-slate-400 text-sm line-clamp-3 leading-relaxed">
+                        {post.summary}
+                      </p>
+                    </div>
+
+                    {/* Card Footer */}
+                    <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800/60 text-xs">
+                      <div className="flex items-center gap-2">
+                        <img
+                          src={post.userPhoto}
+                          alt={post.author}
+                          className="w-6 h-6 rounded-full object-cover border border-slate-200"
+                        />
+                        <span className="font-medium text-slate-700 dark:text-slate-300">
+                          {post.author}
                         </span>
                       </div>
-                    </div>
-                    <CardHeader className="p-6">
-                      <CardTitle className="text-xl font-black text-primary group-hover:text-accent transition-colors">
-                        {log.title}
-                      </CardTitle>
-                      <CardDescription className="font-bold">
-                        {log.date}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="px-6 pb-6">
-                      <Link href="/write">
-                        <Button
-                          variant="outline"
-                          className="w-full rounded-2xl py-6 font-bold border-2 border-primary/20 hover:bg-primary/5 hover:border-primary"
+                      <button className="text-brand-600 dark:text-brand-400 font-semibold flex items-center gap-0.5 hover:gap-1 transition-all">
+                        일지 읽기
+                        <svg
+                          className="w-3.5 h-3.5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
                         >
-                          다시 열어보기
-                        </Button>
-                      </Link>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </section>
-
-            {/* 오늘의 미션 */}
-            <section
-              className="bg-gradient-to-br from-accent/20 to-accent/5 rounded-[4rem] p-10 shadow-lg border-4 border-accent/20 relative overflow-hidden group"
-              suppressHydrationWarning
-            >
-              <div className="absolute -right-10 -top-10 text-accent/10 group-hover:rotate-45 transition-transform duration-1000">
-                <Rocket size={250} />
-              </div>
-              <div className="flex flex-col md:flex-row items-center gap-8 relative z-10">
-                <div className="p-6 bg-accent rounded-[2.5rem] text-accent-foreground shadow-2xl animate-float">
-                  <Rocket className="h-14 w-14" />
-                </div>
-                <div className="text-center md:text-left">
-                  <h3 className="font-headline text-3xl font-black mb-3 text-primary">
-                    오늘의 비밀 임무!
-                  </h3>
-                  <p className="text-xl font-bold text-muted-foreground mb-8">
-                    나비 번데기의 색깔을 관찰하고,
-                    <br />
-                    <span className="text-accent underline decoration-4 underline-offset-4">
-                      진짜 사실
-                    </span>
-                    을 3개만 적어보세요!
-                  </p>
-                  <Link href="/butterfly">
-                    <Button className="rounded-[2rem] px-10 py-8 text-xl font-black bg-accent text-accent-foreground hover:bg-accent/90 shadow-xl hover:scale-105 transition-transform btn-kid">
-                      탐험 시작!
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </section>
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M9 5l7 7-7 7"
+                          ></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
 
-          {/* 사이드바 */}
-          <aside className="space-y-8" suppressHydrationWarning>
-            <Card
-              className="border-4 border-primary/10 shadow-xl overflow-hidden rounded-[3rem] bg-white"
-              suppressHydrationWarning
-            >
-              <CardHeader
-                className="bg-primary p-8 text-white text-center"
-                suppressHydrationWarning
-              >
-                <CardTitle className="text-2xl font-black flex items-center justify-center gap-2">
-                  <Trophy className="h-8 w-8 text-accent animate-pulse" />{" "}
-                  훌륭한 탐험가
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-8">
-                <div className="space-y-8">
-                  <div
-                    className="flex flex-col items-center gap-2 bg-muted/50 p-6 rounded-[2.5rem]"
-                    suppressHydrationWarning
-                  >
-                    <span className="font-bold text-muted-foreground">
-                      내가 찾은 비밀
-                    </span>
-                    <span className="font-black text-4xl text-primary">
-                      12개
-                    </span>
+          {/* Sidebar */}
+          <aside className="lg:col-span-4 space-y-8 sticky top-24">
+            {/* NATURA Profile Card */}
+            <div className="bg-gradient-to-br from-brand-500 to-brand-700 text-white p-6 rounded-3xl shadow-lg relative overflow-hidden">
+              <div className="absolute -right-10 -bottom-10 opacity-10">
+                <svg
+                  className="w-40 h-40"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                </svg>
+              </div>
+
+              <div className="relative z-10 space-y-4">
+                <h4 className="font-serif-fancy text-xl font-bold tracking-wider text-emerald-100">
+                  NATURA DIARY
+                </h4>
+                <p className="text-sm text-brand-100 leading-relaxed font-light">
+                  발걸음이 닿는 전국의 숲과 정원에서 마주한 작은 야생화들,
+                  찾아오는 숲새들의 생태 아카이브입니다.
+                </p>
+
+                {/* User Profile Section */}
+                <div className="bg-emerald-800/40 p-4 rounded-2xl border border-white/20 space-y-3">
+                  {user && !user.isAnonymous ? (
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2.5">
+                        <img
+                          src={
+                            user.photoURL ||
+                            "https://api.dicebear.com/7.x/avataaars/svg?seed=default"
+                          }
+                          alt={user.displayName || "User"}
+                          className="w-10 h-10 rounded-full border border-white/40 object-cover shadow"
+                        />
+                        <div className="min-w-0 flex-grow">
+                          <span className="block text-sm font-bold text-white truncate">
+                            {user.displayName}
+                          </span>
+                          <span className="block text-[10px] text-emerald-200 truncate">
+                            {user.email}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between gap-2 pt-1">
+                        <span className="inline-block bg-white/20 text-white text-[9px] px-2 py-1 rounded font-bold uppercase tracking-wider">
+                          구글 연동
+                        </span>
+                        <button
+                          onClick={handleLogout}
+                          className="text-white hover:text-red-200 text-xs px-2 py-1 rounded transition font-bold flex items-center gap-1"
+                        >
+                          <svg
+                            className="w-3.5 h-3.5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                            ></path>
+                          </svg>
+                          로그아웃
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      <div>
+                        <span className="text-[10px] text-emerald-200 block font-semibold tracking-wider uppercase">
+                          임시 네트워크 ID
+                        </span>
+                        <span className="text-[11px] font-mono select-all break-all text-emerald-100 block">
+                          {user?.uid || "동기화 중..."}
+                        </span>
+                      </div>
+                      <button
+                        onClick={handleGoogleLogin}
+                        className="w-full bg-white text-emerald-700 hover:bg-brand-50 text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition shadow"
+                      >
+                        <svg
+                          className="w-3.5 h-3.5"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                        >
+                          <path d="M12.24 10.285V13.4h6.887C18.2 15.614 15.645 18 12.24 18c-3.86 0-7-3.14-7-7s3.14-7 7-7c1.71 0 3.28.62 4.5 1.643l2.425-2.424C17.433 1.583 14.99 1 12.24 1 6.58 1 2 5.58 2 11.24s4.58 10.24 10.24 10.24c5.795 0 10.24-4.11 10.24-10.24 0-.685-.06-1.352-.18-1.955H12.24z" />
+                        </svg>
+                        구글 계정 연동하기
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                <div className="border-t border-white/20 pt-4 flex justify-between items-center text-xs">
+                  <div>
+                    <span className="block text-brand-200">등록된 일지</span>
+                    <span className="text-lg font-bold">{posts.length}편</span>
                   </div>
-                  <div className="space-y-4">
-                    <div
-                      className="flex justify-between items-center px-2"
-                      suppressHydrationWarning
-                    >
-                      <span className="font-bold text-muted-foreground text-lg">
-                        성장 에너지
-                      </span>
-                      <span className="font-black text-2xl text-accent">
-                        85%
-                      </span>
-                    </div>
-                    <div className="h-6 w-full bg-muted rounded-full overflow-hidden border-4 border-white shadow-inner">
-                      <div className="h-full bg-accent w-[85%] rounded-full transition-all duration-1000" />
-                    </div>
-                    <p
-                      className="text-sm font-bold text-center text-primary mt-4 bg-primary/5 py-3 rounded-2xl border border-primary/10"
-                      suppressHydrationWarning
-                    >
-                      진짜 과학자가 다 되었네요! 👏
-                    </p>
+                  <div className="flex gap-2">
+                    <span className="bg-white/10 px-2.5 py-1 rounded-md text-[10px]">
+                      #자연관찰
+                    </span>
+                    <span className="bg-white/10 px-2.5 py-1 rounded-md text-[10px]">
+                      #야생화
+                    </span>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-
-            <Card
-              className="border-4 border-accent/10 shadow-xl rounded-[3.5rem] bg-white p-4"
-              suppressHydrationWarning
-            >
-              <CardHeader
-                className="p-6 pb-2 text-center"
-                suppressHydrationWarning
-              >
-                <CardTitle className="text-xl font-black text-primary">
-                  비밀 도구 상자
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-4 p-4">
-                <Link
-                  href="/practice"
-                  className="flex items-center gap-5 p-6 rounded-[2.5rem] bg-secondary/50 hover:bg-secondary transition-all group border-2 border-transparent hover:border-primary/20"
-                >
-                  <div className="bg-primary p-4 rounded-2xl text-white group-hover:rotate-12 transition-transform">
-                    <Microscope className="h-8 w-8" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-lg font-black text-primary">
-                      사실 판별기
-                    </p>
-                    <p className="text-sm font-bold text-muted-foreground">
-                      진짜 사실일까?
-                    </p>
-                  </div>
-                </Link>
-                <Link
-                  href="/butterfly"
-                  className="flex items-center gap-5 p-6 rounded-[2.5rem] bg-accent/10 hover:bg-accent/20 transition-all group border-2 border-transparent hover:border-accent/20"
-                >
-                  <div className="bg-accent p-4 rounded-2xl text-accent-foreground group-hover:rotate-12 transition-transform">
-                    <Sparkles className="h-8 w-8" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-lg font-black text-accent-foreground">
-                      나비 탐험관
-                    </p>
-                    <p className="text-sm font-bold text-muted-foreground">
-                      나비의 비밀!
-                    </p>
-                  </div>
-                </Link>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </aside>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

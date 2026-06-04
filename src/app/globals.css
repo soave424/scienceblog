@@ -4,33 +4,42 @@
 
 @layer base {
   :root {
-    /* 초등학생 탐험대 컨셉: 밝은 연두, 따뜻한 노랑, 활기찬 주황 */
-    --background: 80 60% 98%;
-    --foreground: 160 50% 10%;
+    /* NATURA Design - Slate & Emerald Color Scheme */
+    --background: 0 0% 98%;
+    --foreground: 217 32.6% 17.5%;
     --card: 0 0% 100%;
-    --card-foreground: 160 50% 15%;
+    --card-foreground: 217 32.6% 17.5%;
     --popover: 0 0% 100%;
-    --popover-foreground: 160 50% 15%;
-    --primary: 142 76% 45%; /* 밝은 초록 */
+    --popover-foreground: 217 32.6% 17.5%;
+    --primary: 160 84.3% 39.8%; /* Emerald-500 */
     --primary-foreground: 0 0% 100%;
-    --secondary: 48 100% 90%; /* 아주 연한 노랑 */
-    --secondary-foreground: 48 100% 20%;
-    --muted: 142 20% 94%;
-    --muted-foreground: 160 20% 40%;
-    --accent: 35 100% 55%; /* 선명한 주황 */
+    --secondary: 0 0% 96.1%; /* Slate-100 */
+    --secondary-foreground: 217 32.6% 17.5%;
+    --muted: 215 13.8% 34.1%; /* Slate-500 */
+    --muted-foreground: 217 32.6% 17.5%;
+    --accent: 348 83.5% 51.4%; /* Rose accent */
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 142 30% 90%;
-    --input: 142 30% 90%;
-    --ring: 142 76% 45%;
-    --radius: 2rem; /* 훨씬 더 둥글게 */
-    /* NATURA 브랜드 색상 (emerald-ish) */
-    --brand-50: #ecfdf5;
-    --brand-100: #d1fae5;
-    --brand-500: #10b981;
-    --brand-600: #059669;
-    --brand-700: #047857;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 160 84.3% 39.8%;
+    --radius: 1.5rem;
+  }
+
+  .dark {
+    --background: 217 32.6% 17.5%;
+    --foreground: 210 40% 98%;
+    --card: 217 32.6% 17.5%;
+    --card-foreground: 210 40% 98%;
+    --popover: 217 32.6% 17.5%;
+    --popover-foreground: 210 40% 98%;
+    --secondary: 217 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 32.6% 17.5%;
+    --muted-foreground: 212 12.2% 61.8%;
+    --border: 217 32.6% 17.5%;
+    --input: 217 32.6% 17.5%;
   }
 }
 
@@ -39,50 +48,23 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-body;
+    @apply bg-background text-foreground;
+    font-family: "Noto Sans KR", sans-serif;
   }
-}
-
-.font-headline {
-  font-family: "Space Grotesk", sans-serif;
-}
-
-.font-body {
-  font-family: "Inter", sans-serif;
 }
 
 .font-serif-fancy {
   font-family: "Playfair Display", serif;
 }
 
-/* NATURA specific helpers */
-.brand-600 {
-  color: var(--brand-600);
-}
-.brand-500 {
-  color: var(--brand-500);
-}
-.bg-brand-50 {
-  background-color: var(--brand-50);
-}
-.bg-brand-500 {
-  background-color: var(--brand-500);
-}
-.text-brand-600 {
-  color: var(--brand-600);
-}
-.text-brand-400 {
-  color: #34d399;
-}
-
-/* 몽글몽글한 애니메이션 */
+/* Float Animation */
 @keyframes float {
   0%,
   100% {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-8px);
   }
 }
 
@@ -90,34 +72,20 @@
   animation: float 3s infinite ease-in-out;
 }
 
-@keyframes pop {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-.hover-pop:hover {
-  animation: pop 0.3s ease-out forwards;
-}
-
-/* 초등학생용 큰 버튼 스타일 */
-.btn-kid {
-  @apply rounded-[2rem] shadow-lg transition-all active:scale-95 font-black;
-}
-
-/* 커스텀 스크롤바 */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 ::-webkit-scrollbar-track {
-  @apply bg-muted;
+  background: transparent;
+}
+.dark ::-webkit-scrollbar-track {
+  background: #1e293b;
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-primary/30 rounded-full border-4 border-muted hover:bg-primary/50;
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
 }
