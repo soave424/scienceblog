@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Header } from "@/components/Header";
@@ -13,6 +12,8 @@ import { useUser } from "@/firebase";
 
 export default function Home() {
   const { user } = useUser();
+  
+  // 샘플 데이터
   const recentLogs = [
     { 
       id: 1, 

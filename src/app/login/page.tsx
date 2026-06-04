@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect } from "react";
@@ -8,11 +7,13 @@ import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { BookOpen, Sparkles } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function LoginPage() {
   const { user } = useUser();
   const auth = useAuth();
   const router = useRouter();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (user) {
@@ -21,11 +22,23 @@ export default function LoginPage() {
   }, [user, router]);
 
   const handleGoogleLogin = async () => {
-    if (!auth) return;
+    if (!auth) {
+      toast({
+        variant: "destructive",
+        title: "탐험 준비 중...",
+        description: "Firebase 설정이 완료되지 않았습니다. 잠시 후 다시 시도해주세요!",
+      });
+      return;
+    }
     try {
       await signInWithPopup(auth, new GoogleAuthProvider());
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login failed:", error);
+      toast({
+        variant: "destructive",
+        title: "로그인 실패",
+        description: error.message || "구글 로그인 중 문제가 발생했습니다.",
+      });
     }
   };
 

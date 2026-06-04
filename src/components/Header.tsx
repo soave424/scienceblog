@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -22,7 +21,7 @@ export function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-md border-b-4 border-primary/10">
+    <header className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-md border-b-4 border-primary/10" suppressHydrationWarning>
       <div className="container mx-auto flex h-24 items-center justify-between px-6">
         <Link href="/" className="flex items-center gap-4 group">
           <div className="flex h-14 w-14 items-center justify-center rounded-[1.25rem] bg-primary text-white shadow-xl shadow-primary/20 transition-all group-hover:scale-110 group-hover:rotate-6">
