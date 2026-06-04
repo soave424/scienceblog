@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { ReactNode, useMemo } from 'react';
@@ -11,9 +10,9 @@ import { FirebaseErrorListener } from '@/components/FirebaseErrorListener';
 
 export function FirebaseClientProvider({ children }: { children: ReactNode }) {
   const firebaseValues = useMemo(() => {
-    // API 키가 없어도 앱이 크래시되지 않고 UI를 보여줄 수 있도록 수정
+    // API 키가 없으면 null을 반환하여 런타임 에러를 방지합니다.
     if (!firebaseConfig.apiKey || firebaseConfig.apiKey === "") {
-      console.warn("Firebase API Key가 설정되지 않았습니다. 로그인 및 데이터 저장 기능이 작동하지 않을 수 있습니다.");
+      console.warn("Firebase API Key가 설정되지 않았습니다. 인증 및 데이터베이스 기능이 비활성화됩니다.");
       return { firebaseApp: null, firestore: null, auth: null };
     }
 
@@ -23,12 +22,11 @@ export function FirebaseClientProvider({ children }: { children: ReactNode }) {
       const auth = getAuth(firebaseApp);
       return { firebaseApp, firestore, auth };
     } catch (error) {
-      console.error("Firebase 초기화 실패:", error);
+      console.error("Firebase 초기화 중 오류 발생:", error);
       return { firebaseApp: null, firestore: null, auth: null };
     }
   }, []);
 
-  // Firebase가 초기화되지 않았더라도 UI(children)를 렌더링하도록 변경 (탭 클릭 가능하게 함)
   return (
     <FirebaseProvider 
       firebaseApp={firebaseValues.firebaseApp as any} 
