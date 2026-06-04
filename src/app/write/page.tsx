@@ -53,7 +53,7 @@ export default function WritePage() {
       });
       if (result.questions && result.questions.length > 0) {
         result.questions.forEach(q => {
-          // Safe string handling
+          // Safe string handling with the recommended pattern
           const safeQuestion = String(q || "").trim();
           if (safeQuestion) {
             setChatMessages(prev => [...prev, { role: 'ai', text: safeQuestion }]);
@@ -67,8 +67,8 @@ export default function WritePage() {
 
   // Real-time Writing Coach with Debounce
   useEffect(() => {
-    // Safe check for content
-    const safeContent = (content || "").trim();
+    // Safe check for content using the recommended pattern
+    const safeContent = String(content || "").trim();
     if (!safeContent || safeContent.length < 10) return;
 
     if (coachTimer.current) clearTimeout(coachTimer.current);
@@ -204,7 +204,7 @@ export default function WritePage() {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
                     const val = (e.target as HTMLInputElement).value;
-                    const safeVal = (val || "").trim();
+                    const safeVal = String(val || "").trim();
                     if (!safeVal) return;
                     setChatMessages(prev => [...prev, { role: 'user', text: safeVal }]);
                     (e.target as HTMLInputElement).value = '';

@@ -29,11 +29,11 @@ export default function LoginPage() {
   }, [user, router]);
 
   const handleGoogleLogin = async () => {
-    if (!auth) {
+    if (!auth || !process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
       toast({
         variant: "destructive",
         title: "탐험 준비 중...",
-        description: "Firebase 설정이 완료되지 않았습니다. 관리자에게 문의하거나 체험 모드를 이용해 주세요!",
+        description: "Firebase 설정(API Key)이 완료되지 않았습니다. 관리자에게 문의하거나 체험 모드를 이용해 주세요!",
       });
       return;
     }

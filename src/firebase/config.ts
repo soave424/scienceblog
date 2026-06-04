@@ -15,6 +15,8 @@ export const firebaseConfig = {
 // Debug helper for development environment
 if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
   if (!firebaseConfig.projectId) {
-    console.error("Firebase Project ID is missing. Please check your .env file and ensure NEXT_PUBLIC_FIREBASE_PROJECT_ID is set.");
+    console.warn("⚠️ Firebase Project ID가 설정되지 않았습니다. .env 파일의 NEXT_PUBLIC_FIREBASE_PROJECT_ID를 확인해주세요.");
+  } else {
+    console.log("✅ Firebase Project ID 연동됨:", firebaseConfig.projectId);
   }
 }
