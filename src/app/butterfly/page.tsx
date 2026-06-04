@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Sparkles, Camera, Play, ArrowRight, Info, CheckCircle2 } from "lucide-react";
 import { generateTargetedObservationPrompts } from "@/ai/flows/ai-targeted-observation-prompts";
 import Image from "next/image";
+import Link from "next/link";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
@@ -57,7 +58,7 @@ export default function ButterflyPage() {
             <div className="flex items-center justify-between">
               <h1 className="font-headline text-3xl font-bold text-primary">나비 한살이 가상 관찰</h1>
               <div className="flex gap-2">
-                <Button variant="outline" onClick={handleCapture} className="rounded-xl">
+                <Button variant="outline" onClick={handleCapture} className="rounded-xl border-2 hover:bg-primary/5">
                   <Camera className="mr-2 h-4 w-4" /> 현재 화면 캡처
                 </Button>
                 <Button className="rounded-xl shadow-lg shadow-primary/20">
@@ -143,7 +144,7 @@ export default function ButterflyPage() {
                   캡처한 이미지는 자동으로 관찰 일지에 저장됩니다.
                 </p>
                 <Link href="/write">
-                  <Button variant="secondary" className="w-full bg-white text-primary hover:bg-white/90">
+                  <Button variant="secondary" className="w-full bg-white text-primary hover:bg-white/90 font-bold rounded-xl">
                     일지 작성하러 가기 <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
