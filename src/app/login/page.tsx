@@ -34,18 +34,20 @@ export default function LoginPage() {
       toast({
         variant: "destructive",
         title: "탐험 준비 중...",
-        description: "Firebase 설정이 확인되지 않습니다. 잠시 후 다시 시도해주세요!",
+        description: "Firebase 설정이 완료되지 않았습니다. 잠시 후 다시 시도해주세요!",
       });
       return;
     }
     try {
       const provider = new GoogleAuthProvider();
       // 팝업 시 강제로 계정 선택창이 뜨도록 설정
-      provider.setCustomParameters({ prompt: 'select_account' });
+      provider.setCustomParameters({
+        prompt: 'select_account'
+      });
       await signInWithPopup(auth, provider);
       toast({
-        title: "환영합니다!",
-        description: "성공적으로 로그인되었습니다. 탐험을 시작합니다!",
+        title: "로그인 성공!",
+        description: "탐험 대원이 되신 것을 환영합니다!",
       });
     } catch (error: any) {
       console.error("Login failed:", error);
@@ -73,20 +75,20 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-primary flex items-center justify-center p-4 relative overflow-hidden" suppressHydrationWarning>
       {/* Background Decorations */}
-      <div className="absolute top-10 left-10 text-white/20 animate-bounce-subtle">
+      <div className="absolute top-10 left-10 text-white/20 animate-bounce-subtle" suppressHydrationWarning>
         <Sparkles size={80} />
       </div>
-      <div className="absolute bottom-10 right-10 text-white/20 animate-bounce-subtle" style={{ animationDelay: '1s' }}>
+      <div className="absolute bottom-10 right-10 text-white/20 animate-bounce-subtle" style={{ animationDelay: '1s' }} suppressHydrationWarning>
         <BookOpen size={100} />
       </div>
 
       <Card className="w-full max-w-md border-none shadow-2xl rounded-[3rem] overflow-hidden" suppressHydrationWarning>
         <CardHeader className="text-center pt-10 pb-6" suppressHydrationWarning>
-          <div className="mx-auto h-20 w-20 bg-primary rounded-3xl flex items-center justify-center text-white mb-6 shadow-xl rotate-3 animate-float">
+          <div className="mx-auto h-20 w-20 bg-primary rounded-3xl flex items-center justify-center text-white mb-6 shadow-xl rotate-3 animate-float" suppressHydrationWarning>
             <BookOpen size={40} />
           </div>
-          <CardTitle className="text-3xl font-black text-primary">사이언스 탐험대</CardTitle>
-          <CardDescription className="text-lg font-medium text-muted-foreground mt-2">
+          <CardTitle className="text-3xl font-black text-primary" suppressHydrationWarning>사이언스 탐험대</CardTitle>
+          <CardDescription className="text-lg font-medium text-muted-foreground mt-2" suppressHydrationWarning>
             오늘도 신비로운 과학의 세계로!<br/>함께 떠나볼까요?
           </CardDescription>
         </CardHeader>
@@ -99,7 +101,7 @@ export default function LoginPage() {
             구글로 로그인
           </Button>
           
-          <div className="relative py-2">
+          <div className="relative py-2" suppressHydrationWarning>
             <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-muted" /></div>
             <div className="relative flex justify-center text-xs uppercase"><span className="bg-white px-2 text-muted-foreground font-bold">또는</span></div>
           </div>
@@ -114,7 +116,7 @@ export default function LoginPage() {
             {isDemoLoading ? "탐험 준비 중..." : "그냥 구경해볼래요!"}
           </Button>
 
-          <p className="text-center text-sm text-muted-foreground mt-8 font-bold">
+          <p className="text-center text-sm text-muted-foreground mt-8 font-bold" suppressHydrationWarning>
             탐험 대원이 되려면 선생님의 도움을 받으세요!
           </p>
         </CardContent>
