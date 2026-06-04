@@ -5,26 +5,27 @@
 
 @layer base {
   :root {
-    --background: 214 33% 95%;
-    --foreground: 219 50% 15%;
+    /* 초등학생 친화적인 밝고 따뜻한 색상 (Green & Yellow) */
+    --background: 80 40% 98%;
+    --foreground: 160 50% 10%;
     --card: 0 0% 100%;
-    --card-foreground: 219 50% 15%;
+    --card-foreground: 160 50% 15%;
     --popover: 0 0% 100%;
-    --popover-foreground: 219 50% 15%;
-    --primary: 219 50% 45%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 214 30% 90%;
-    --secondary-foreground: 219 50% 25%;
-    --muted: 214 20% 90%;
-    --muted-foreground: 219 20% 45%;
-    --accent: 188 62% 57%;
-    --accent-foreground: 219 50% 15%;
+    --popover-foreground: 160 50% 15%;
+    --primary: 142 76% 36%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 142 30% 92%;
+    --secondary-foreground: 142 50% 20%;
+    --muted: 142 20% 94%;
+    --muted-foreground: 160 20% 40%;
+    --accent: 48 100% 50%; /* Sunny Yellow */
+    --accent-foreground: 48 50% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 214 20% 85%;
-    --input: 214 20% 85%;
-    --ring: 219 50% 45%;
-    --radius: 0.75rem;
+    --border: 142 20% 88%;
+    --input: 142 20% 88%;
+    --ring: 142 76% 36%;
+    --radius: 1.5rem; /* 더 둥글둥글하게 */
   }
 }
 
@@ -43,4 +44,14 @@
 
 .font-body {
   font-family: 'Inter', sans-serif;
+}
+
+/* 아기자기한 애니메이션 */
+@keyframes bounce-subtle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.animate-bounce-subtle {
+  animation: bounce-subtle 2s infinite ease-in-out;
 }

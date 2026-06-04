@@ -1,0 +1,45 @@
+
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Information about the explorer student.",
+      "type": "object",
+      "properties": {
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "level": { "type": "number", "description": "Explorer level based on activities." },
+        "exp": { "type": "number", "description": "Experience points." }
+      },
+      "required": ["displayName"]
+    },
+    "ObservationLog": {
+      "title": "Observation Log",
+      "description": "A scientific observation entry made by a student.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "imageUrls": { "type": "array", "items": { "type": "string" } },
+        "status": { "type": "string", "enum": ["draft", "published"] },
+        "objectivityScore": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "title", "content"]
+    }
+  },
+  "auth": {
+    "providers": ["google.com"]
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile data."
+    },
+    "/logs/{logId}": {
+      "schema": "ObservationLog",
+      "description": "Global collection of all observation logs."
+    }
+  }
+}
