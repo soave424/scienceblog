@@ -34,12 +34,19 @@ export default function LoginPage() {
       toast({
         variant: "destructive",
         title: "탐험 준비 중...",
-        description: "Firebase 설정이 완료되지 않았습니다. 잠시 후 다시 시도해주세요!",
+        description: "Firebase 설정이 확인되지 않습니다. 잠시 후 다시 시도해주세요!",
       });
       return;
     }
     try {
-      await signInWithPopup(auth, new GoogleAuthProvider());
+      const provider = new GoogleAuthProvider();
+      // 팝업 시 강제로 계정 선택창이 뜨도록 설정
+      provider.setCustomParameters({ prompt: 'select_account' });
+      await signInWithPopup(auth, provider);
+      toast({
+        title: "환영합니다!",
+        description: "성공적으로 로그인되었습니다. 탐험을 시작합니다!",
+      });
     } catch (error: any) {
       console.error("Login failed:", error);
       toast({
@@ -89,7 +96,7 @@ export default function LoginPage() {
             className="w-full py-8 text-lg font-bold rounded-2xl shadow-lg bg-white text-gray-800 hover:bg-gray-50 border-4 border-gray-100 flex items-center justify-center gap-3 transition-transform active:scale-95"
           >
             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-6 h-6" />
-            선생님/부모님 계정으로 로그인
+            구글로 로그인
           </Button>
           
           <div className="relative py-2">
