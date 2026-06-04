@@ -1,18 +1,28 @@
 'use client';
 
-import React, { ReactNode, useMemo } from 'react';
-import { initializeApp, getApps, getApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
+import React, { ReactNode, useMemo, useEffect, useState } from 'react';
+import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
+import { getFirestore, Firestore } from 'firebase/firestore';
+import { getAuth, Auth } from 'firebase/auth';
 import { firebaseConfig } from './config';
 import { FirebaseProvider } from './provider';
 import { FirebaseErrorListener } from '@/components/FirebaseErrorListener';
 
 export function FirebaseClientProvider({ children }: { children: ReactNode }) {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const firebaseValues = useMemo(() => {
-    // API 키가 없으면 null을 반환하여 런타임 에러를 방지합니다.
-    if (!firebaseConfig.apiKey || firebaseConfig.apiKey === "") {
-      console.warn("Firebase API Key가 설정되지 않았습니다. 인증 및 데이터베이스 기능이 비활성화됩니다.");
+    // Check for essential config values
+    const hasConfig = firebaseConfig.apiKey && firebaseConfig.projectId;
+    
+    if (!hasConfig) {
+      if (typeof window !== 'undefined') {
+        console.warn("Firebase configuration is incomplete. Authentication and database features will be disabled.");
+      }
       return { firebaseApp: null, firestore: null, auth: null };
     }
 
@@ -22,10 +32,12 @@ export function FirebaseClientProvider({ children }: { children: ReactNode }) {
       const auth = getAuth(firebaseApp);
       return { firebaseApp, firestore, auth };
     } catch (error) {
-      console.error("Firebase 초기화 중 오류 발생:", error);
+      console.error("Error initializing Firebase:", error);
       return { firebaseApp: null, firestore: null, auth: null };
     }
   }, []);
+
+  if (!isMounted) return null;
 
   return (
     <FirebaseProvider 

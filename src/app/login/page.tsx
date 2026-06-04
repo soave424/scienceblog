@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -34,13 +33,12 @@ export default function LoginPage() {
       toast({
         variant: "destructive",
         title: "탐험 준비 중...",
-        description: "Firebase 설정이 완료되지 않았습니다. 잠시 후 다시 시도해주세요!",
+        description: "Firebase 설정이 완료되지 않았습니다. 관리자에게 문의하거나 체험 모드를 이용해 주세요!",
       });
       return;
     }
     try {
       const provider = new GoogleAuthProvider();
-      // 팝업 시 강제로 계정 선택창이 뜨도록 설정
       provider.setCustomParameters({
         prompt: 'select_account'
       });
@@ -63,7 +61,7 @@ export default function LoginPage() {
     setIsDemoLoading(true);
     toast({
       title: "체험 모드 시작!",
-      description: "로그인 없이 탐험을 시작합니다. (저장 기능은 제한될 수 있어요!)",
+      description: "로그인 없이 탐험을 시작합니다. (일부 기능이 제한될 수 있습니다.)",
     });
     setTimeout(() => {
       router.push("/");
@@ -84,11 +82,11 @@ export default function LoginPage() {
 
       <Card className="w-full max-w-md border-none shadow-2xl rounded-[3rem] overflow-hidden" suppressHydrationWarning>
         <CardHeader className="text-center pt-10 pb-6" suppressHydrationWarning>
-          <div className="mx-auto h-20 w-20 bg-primary rounded-3xl flex items-center justify-center text-white mb-6 shadow-xl rotate-3 animate-float" suppressHydrationWarning>
+          <div className="mx-auto h-20 w-20 bg-primary rounded-3xl flex items-center justify-center text-white mb-6 shadow-xl rotate-3 animate-float">
             <BookOpen size={40} />
           </div>
-          <CardTitle className="text-3xl font-black text-primary" suppressHydrationWarning>사이언스 탐험대</CardTitle>
-          <CardDescription className="text-lg font-medium text-muted-foreground mt-2" suppressHydrationWarning>
+          <CardTitle className="text-3xl font-black text-primary">사이언스 탐험대</CardTitle>
+          <CardDescription className="text-lg font-medium text-muted-foreground mt-2">
             오늘도 신비로운 과학의 세계로!<br/>함께 떠나볼까요?
           </CardDescription>
         </CardHeader>
@@ -117,7 +115,7 @@ export default function LoginPage() {
           </Button>
 
           <p className="text-center text-sm text-muted-foreground mt-8 font-bold" suppressHydrationWarning>
-            탐험 대원이 되려면 선생님의 도움을 받으세요!
+            문제가 발생하면 선생님이나 부모님께 도움을 요청하세요!
           </p>
         </CardContent>
       </Card>
