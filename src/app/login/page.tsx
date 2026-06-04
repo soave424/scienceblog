@@ -7,8 +7,9 @@ import { useUser, useAuth } from "@/firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { BookOpen, Sparkles, Rocket, Ghost } from "lucide-react";
+import { BookOpen, Sparkles, Rocket } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 export default function LoginPage() {
   const { user } = useUser();
@@ -16,6 +17,11 @@ export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [isDemoLoading, setIsDemoLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -54,6 +60,8 @@ export default function LoginPage() {
       router.push("/");
     }, 1500);
   };
+
+  if (!mounted) return null;
 
   return (
     <div className="min-h-screen bg-primary flex items-center justify-center p-4 relative overflow-hidden" suppressHydrationWarning>
