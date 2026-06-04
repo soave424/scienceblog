@@ -1,5 +1,4 @@
-'use client';
-
+// 이 파일은 단순 설정 객체이므로 'use client'가 필요 없으며, 서버/클라이언트 공용으로 사용됩니다.
 export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyDummyKey",
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "your-project.firebaseapp.com",
